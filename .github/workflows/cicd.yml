@@ -1,4 +1,4 @@
-name: AI Example: Tic-tac-toe
+name: AI Example Tic-tac-toe
 
 on: [push]
 
