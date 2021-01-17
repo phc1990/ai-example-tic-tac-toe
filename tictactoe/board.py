@@ -34,11 +34,11 @@ class Board:
 
         # Check only if the number of moves made reaches the minimum for a winning position.
         if self.moves >= (2*size -1):
-            self.winner = self.__determine_winner()
+            self.winner = self._determine_winner()
         else:
             self.winner = Winner.UNDETERMINED
 
-    def __determine_winner(self) -> Winner:
+    def _determine_winner(self) -> Winner:
         size = len(self.state)
 
         # Check columns
@@ -136,13 +136,16 @@ class Board:
         Returns:
             List: a list containing the coordinates of all feasible moves.
         """
-        size = len(self.state)
-        feasible = []
-        for i in range(size):
-            for j in range(size):
-                if self.state[i][j] == None:
-                    feasible.append([i, j])
-        return feasible
+        if self.winner == Winner.UNDETERMINED:
+            size = len(self.state)
+            feasible = []
+            for i in range(size):
+                for j in range(size):
+                    if self.state[i][j] == None:
+                        feasible.append([i, j])
+            return feasible           
+
+        return []
 
     def __str__(self) -> str:
         """Returns a string representing the status of the board.

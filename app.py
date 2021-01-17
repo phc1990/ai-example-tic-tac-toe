@@ -1,11 +1,13 @@
 from unittest.main import main
-from tictactoe.search import SearchAlgorithm, Random
+from tictactoe import search
+from tictactoe.search import Minimax, Node, SearchAlgorithm, Random
 from tictactoe.board import Board, Winner
 
 def app(algorithm: SearchAlgorithm, player: bool):
 
     b = Board()
-    print(str(b))
+    if not player:
+        print(str(b))
 
     while b.winner == Winner.UNDETERMINED:
         
@@ -29,4 +31,4 @@ def app(algorithm: SearchAlgorithm, player: bool):
 
 
 if __name__ == "__main__":
-    app(Random(), True)
+    app(Minimax(True, 5), True)
