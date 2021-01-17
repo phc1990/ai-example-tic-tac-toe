@@ -69,11 +69,10 @@ class Minimax(SearchAlgorithm):
             
         return 1 if board.winner == Winner.O else -1
 
-    def _evaluate_node(self, node: Node):
+    def _evaluate_node(self, node: Node) -> Node:
         # If it is a node at the bottom
         if node.depth == self.depth or len(node.children) == 0:
-            score = self._evaluate(node.board)
-            node.score = score if self.player else -score
+            node.score = self._evaluate(node.board)
             return
         
         # If it is an intermediate node
@@ -92,7 +91,6 @@ class Minimax(SearchAlgorithm):
                     minimax = child.score
 
         node.score = minimax
-
 
     def search(self, board: Board) -> Board:
         node = Node(board)

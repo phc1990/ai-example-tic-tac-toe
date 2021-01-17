@@ -1,11 +1,11 @@
-from unittest.main import main
+import numpy as np
 from tictactoe import search
-from tictactoe.search import Minimax, Node, SearchAlgorithm, Random
+from tictactoe.search import Minimax, SearchAlgorithm
 from tictactoe.board import Board, Winner
 
 def app(algorithm: SearchAlgorithm, player: bool):
 
-    b = Board()
+    b = Board(np.full((3,3), None))
     if not player:
         print(str(b))
 
@@ -17,7 +17,7 @@ def app(algorithm: SearchAlgorithm, player: bool):
             print(str(b))
         else:
             print("Your move:")
-            i = int(input("Enter X coorinate..."))
+            i = int(input("Enter X coordinate..."))
             j = int(input("Enter Y coordinate..."))
             b = b.apply_move(i, j)
 
@@ -31,4 +31,4 @@ def app(algorithm: SearchAlgorithm, player: bool):
 
 
 if __name__ == "__main__":
-    app(Minimax(True, 5), True)
+    app(Minimax(False, 5), False)
