@@ -17,15 +17,15 @@ class Board:
 
         # Check only if the number of moves made reaches the minimum for a winning position.
         if self.moves >= (2*size -1):
-            self.winner = self.determine_winner()
+            self.winner = self.__determine_winner()
         else:
             self.winner = None
 
-    def determine_winner(self) -> bool:
+    def __determine_winner(self) -> bool:
         size = len(self.state)
 
         # Check columns
-        for i in range(size):
+        for i in range(size)         :
             ref = None
             for j in range(size):
                 s = self.state[i][j]
@@ -99,6 +99,11 @@ class Board:
                     return ref
 
     def apply_move(self, i: int, j: int) -> 'Board':
+        """Applies the given move to the instance.
+
+        Returns:
+            Board: a new instance of the board with the applied move.
+        """
         copy = np.copy(self.state)
         copy[i,j] = self.next
         return Board(copy, self.moves+1)
