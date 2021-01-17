@@ -1,3 +1,4 @@
+from typing import Dict, List
 import numpy as np
 
 class Board:
@@ -10,6 +11,15 @@ class Board:
         winner (bool): Flag indicating the winner, True (X), False (O) or None (no winner).
     """
     def __init__(self, state = [[None, None, None], [None, None, None], [None, None, None]], moves: int = 0) -> None:
+        """Constructor. It should only be used externally to spawn a brand-new board state, i.e. calling it
+        with no arguments. Arguments are meant to be used internally when creating a new instnace after applying
+        a move to an existing one.
+
+        Args:
+            state (list, optional): board state. Defaults to [[None, None, None], [None, None, None], [None, None, None]].
+            moves (int, optional): number of moves taken so fare (this could be computed based on the number of non empty squares,
+            but it is left as an argument to avoid looping over the state every time a move is applied). Defaults to 0.
+        """
         self.state = state
         self.moves = moves
         self.next = moves % 2 == 0
@@ -107,6 +117,20 @@ class Board:
         copy = np.copy(self.state)
         copy[i,j] = self.next
         return Board(copy, self.moves+1)
+
+    def find_feasible_moves(self) -> List:
+        """Finds all feasible moves (depth 1)
+
+        Returns:
+            List: a list containing the coordinates of all feasible moves.
+        """
+        size = len(self.state)
+        feasible = []
+        for i in range(size):
+            for j in range(size):
+                if self.state[i][j] == None:
+                    feasible.append([i, j])
+        return feasible
 
     def __str__(self) -> str:
         """Returns a string representing the status of the board.

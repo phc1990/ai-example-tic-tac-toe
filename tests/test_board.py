@@ -73,6 +73,19 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(False, b.next)
         self.assertEqual(True, b.winner)
     
+    def test_find_feasible_moves(self):
+        b = board.Board([[None, None, None], [None, None, None], [None, None, None]], 0)        
+        np.testing.assert_array_equal([[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]], b.find_feasible_moves())
+
+        b = b.apply_move(1,1)
+        np.testing.assert_array_equal([[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2]], b.find_feasible_moves())
+
+        b = b.apply_move(0,0)
+        np.testing.assert_array_equal([[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2]], b.find_feasible_moves())
+
+        b = b.apply_move(2,2)
+        np.testing.assert_array_equal([[0,1],[0,2],[1,0],[1,2],[2,0],[2,1]], b.find_feasible_moves())
+
     def test_str(self):
         b = board.Board([[None, None, None], [None, None, None], [None, None, None]], 0)
         self.assertEqual(" -  -  - \n" + " -  -  - \n" + " -  -  - \n", str(b))
