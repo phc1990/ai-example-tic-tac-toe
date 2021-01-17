@@ -1,5 +1,12 @@
-from typing import Dict, List
+from typing import List
+from enum import Enum
 import numpy as np
+
+class Winner(Enum):
+    UNDETERMINED = 1
+    X = 2
+    O = 3
+    DRAW = 4
 
 class Board:
     """Tic-tac-toe board representation.
@@ -8,7 +15,7 @@ class Board:
         state (2D-array): State of the board represented by True (X)/False (O) flags.
         moves (int): Number of moves taken so far.
         next (bool): Flag indicating the next player, True (X) or False (O).
-        winner (bool): Flag indicating the winner, True (X), False (O) or None (no winner).
+        winner (Winner): indicates the winner.
     """
     def __init__(self, state = [[None, None, None], [None, None, None], [None, None, None]], moves: int = 0) -> None:
         """Constructor. It should only be used externally to spawn a brand-new board state, i.e. calling it
@@ -29,9 +36,9 @@ class Board:
         if self.moves >= (2*size -1):
             self.winner = self.__determine_winner()
         else:
-            self.winner = None
+            self.winner = Winner.UNDETERMINED
 
-    def __determine_winner(self) -> bool:
+    def __determine_winner(self) -> Winner:
         size = len(self.state)
 
         # Check columns
@@ -51,8 +58,8 @@ class Board:
                         break
                     # All squares have matched the reference
                     if j == size-1:
-                        return ref
-        
+                        return Winner.X if ref else Winner.O
+
         # Check rows
         for j in range(size):
             ref = None
@@ -70,7 +77,7 @@ class Board:
                         break
                     # All squares have matched the reference
                     if i == size-1:
-                        return ref
+                        return Winner.X if ref else Winner.O
         
         # Check [0,0] to [n,n] diagonal
         ref = None
@@ -88,7 +95,7 @@ class Board:
                     break
                 # All squares have matched the reference
                 if i == size-1:
-                    return ref
+                    return Winner.X if ref else Winner.O
         
         # Check [0,n] to [n,0] diagonal
         ref = None
@@ -106,7 +113,12 @@ class Board:
                     break
                 # All squares have matched the reference
                 if i == size-1:
-                    return ref
+                    return Winner.X if ref else Winner.O
+        
+        if self.moves == size * size:
+            return Winner.DRAW
+        
+        return Winner.UNDETERMINED
 
     def apply_move(self, i: int, j: int) -> 'Board':
         """Applies the given move to the instance.
